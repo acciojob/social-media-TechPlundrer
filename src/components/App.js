@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "../styles/App.css";
 
@@ -14,7 +14,7 @@ import EditPostPage from "./EditPostPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <div className="App">
         <h1>GenZ</h1>
 
@@ -22,37 +22,15 @@ function App() {
 
         <Switch>
           <Route exact path="/" component={PostList} />
-
           <Route exact path="/users" component={UsersPage} />
-
-          <Route
-            path="/users/:userId"
-            component={UserPostsPage}
-          />
-
-          <Route
-            path="/notifications"
-            component={NotificationsPage}
-          />
-
-          <Route
-            path="/post"
-            component={CreatePostForm}
-          />
-
-          <Route
-            exact
-            path="/posts/:postId/edit"
-            component={EditPostPage}
-          />
-
-          <Route
-            path="/posts/:postId"
-            component={SinglePostPage}
-          />
+          <Route path="/users/:userId" component={UserPostsPage} />
+          <Route path="/notifications" component={NotificationsPage} />
+          <Route path="/post" component={CreatePostForm} />
+          <Route path="/posts/:postId/edit" component={EditPostPage} />
+          <Route path="/posts/:postId" component={SinglePostPage} />
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 
