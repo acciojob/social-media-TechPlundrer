@@ -1,90 +1,59 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import "../styles/App.css";
 
 import Navbar from "./Navbar";
-import AddPostForm from "./AddPostForm";
 import PostList from "./PostList";
-import UserPage from "./UserPage";
-import NotificationsPages from "./NotificationsPages";
-import EditPost from "./EditPost";
-
-function Home() {
-  return (
-    <div>
-      <AddPostForm />
-      <PostList />
-    </div>
-  );
-}
+import UsersPage from "./UsersPage";
+import UserPostsPage from "./UserPostsPage";
+import NotificationsPage from "./NotificationsPage";
+import CreatePostForm from "./CreatePostForm";
+import SinglePostPage from "./SinglePostPage";
+import EditPostPage from "./EditPostPage";
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <div className="App">
+        <h1>GenZ</h1>
 
-      <Switch>
-        <Route exact path="/" component={Home} />
+        <Navbar />
 
-        <Route
-          exact
-          path="/users"
-          component={UserPage}
-        />
+        <Switch>
+          <Route exact path="/" component={PostList} />
 
-        <Route
-          exact
-          path="/notifications"
-          component={NotificationsPages}
-        />
+          <Route exact path="/users" component={UsersPage} />
 
-        <Route
-          exact
-          path="/editPost/:id"
-          component={EditPost}
-        />
-      </Switch>
+          <Route
+            path="/users/:userId"
+            component={UserPostsPage}
+          />
+
+          <Route
+            path="/notifications"
+            component={NotificationsPage}
+          />
+
+          <Route
+            path="/post"
+            component={CreatePostForm}
+          />
+
+          <Route
+            exact
+            path="/posts/:postId/edit"
+            component={EditPostPage}
+          />
+
+          <Route
+            path="/posts/:postId"
+            component={SinglePostPage}
+          />
+        </Switch>
+      </div>
     </BrowserRouter>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

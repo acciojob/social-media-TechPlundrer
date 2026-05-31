@@ -1,26 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import ViewPostButton from "./ViewPostButton";
+import Reactions from "./Reactions";
 
-function PostsList() {
-    return (
-        <section className="posts-list">
-            <article className="post">
-                <h3>My First Post</h3>
+function PostList() {
+  const posts = [
+    { id: 1, title: "First Post" },
+    { id: 2, title: "Second Post" }
+  ];
 
-                <p>Hello React Router</p>
-
-                <button className="button">
-                👍 0
-                </button>
-
-                <Link to="/editPost/1">
-                    <button className="button">
-                        Edit Post
-                    </button>
-                </Link>
-            </article>
-        </section>
-    );
+  return (
+    <div className="posts-list">
+      {posts.map(post => (
+        <div key={post.id}>
+          <h3>{post.title}</h3>
+          <Reactions />
+          <ViewPostButton id={post.id} />
+        </div>
+      ))}
+    </div>
+  );
 }
 
-export default PostsList;
+export default PostList;
