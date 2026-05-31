@@ -5,10 +5,7 @@ function NotificationsPage() {
 
   return (
     <>
-      <button
-        className="button"
-        onClick={() => setShow(true)}
-      >
+      <button className="button" onClick={() => setShow(true)}>
         Refresh Notifications
       </button>
 

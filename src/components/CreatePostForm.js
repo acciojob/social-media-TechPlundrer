@@ -30,9 +30,7 @@ function CreatePostForm() {
         onChange={(e) => setContent(e.target.value)}
       />
 
-      <button type="submit">
-        Save Post
-      </button>
+      <button type="submit">Save Post</button>
     </form>
   );
 }
