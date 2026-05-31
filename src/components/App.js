@@ -1,13 +1,85 @@
 
 import React from "react";
-import './../styles/App.css';
+import { BrowserRouter, Router, Route } from "react-router-dom";
+import Navbar from "./Navbar"
+import AddPostForm from "./AddPostForm"
+import PostList from "./PostList"
+import UserPage from "./UserPage";
+import NotificationPage from './NotificationsPages';
+import EditPost from "./EditPost"
 
-const App = () => {
+function App() {
   return (
-    <div>
-        {/* Do not remove the main div */}
-    </div>
+    <BrowserRouter>
+    <Navbar />
+    <Routes>
+      <Route path="/" element={
+        <>
+        <AddPostForm />
+        <PostList />
+        </>
+      }
+      />
+
+      <Route path="/users" element={<UserPage />} />
+
+      <Route path="/notifications"
+      element={<NotificationPage />}
+      />
+
+      <Route path="/editPost/:id"
+      element={<EditPost />}
+      />
+    </Routes>
+    </BrowserRouter>
   )
 }
 
-export default App
+
+
+
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
