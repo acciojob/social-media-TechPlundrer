@@ -1,48 +1,53 @@
-
 import React from "react";
-import { BrowserRouter, Router, Route } from "react-router-dom";
-import Navbar from "./Navbar"
-import AddPostForm from "./AddPostForm"
-import PostList from "./PostList"
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+
+import Navbar from "./Navbar";
+import AddPostForm from "./AddPostForm";
+import PostList from "./PostList";
 import UserPage from "./UserPage";
-import NotificationPage from './NotificationsPages';
-import EditPost from "./EditPost"
+import NotificationsPages from "./NotificationsPages";
+import EditPost from "./EditPost";
+
+function Home() {
+  return (
+    <div>
+      <AddPostForm />
+      <PostList />
+    </div>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
-    <Navbar />
-    <Routes>
-      <Route path="/" element={
-        <>
-        <AddPostForm />
-        <PostList />
-        </>
-      }
-      />
+      <Navbar />
 
-      <Route path="/users" element={<UserPage />} />
+      <Switch>
+        <Route exact path="/" component={Home} />
 
-      <Route path="/notifications"
-      element={<NotificationPage />}
-      />
+        <Route
+          exact
+          path="/users"
+          component={UserPage}
+        />
 
-      <Route path="/editPost/:id"
-      element={<EditPost />}
-      />
-    </Routes>
+        <Route
+          exact
+          path="/notifications"
+          component={NotificationsPages}
+        />
+
+        <Route
+          exact
+          path="/editPost/:id"
+          component={EditPost}
+        />
+      </Switch>
     </BrowserRouter>
-  )
+  );
 }
 
-
-
-
-
 export default App;
-
-
-
 
 
 
