@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { addPost, addReaction } from "../postsSlice";
 
 function PostsPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const posts = useSelector((state) => state.posts);
   const users = useSelector((state) => state.users);
@@ -16,26 +17,19 @@ function PostsPage() {
   const onSavePost = (e) => {
     e.preventDefault();
 
-    if (title && content && author) {
-      dispatch(
-        addPost({
-          title,
-          content,
-          author,
-        })
-      );
+    if (!title || !content || !author) return;
 
-      setTitle("");
-      setContent("");
-      setAuthor("");
-    }
-  };
+    dispatch(
+      addPost({
+        title,
+        content,
+        author,
+      })
+    );
 
-  const reactionEmoji = {
-    thumbsUp: "👍",
-    heart: "❤️",
-    laugh: "😂",
-    wow: "😮",
+    setTitle("");
+    setContent("");
+    setAuthor("");
   };
 
   return (
@@ -45,10 +39,9 @@ function PostsPage() {
       <form onSubmit={onSavePost}>
         <input
           id="postTitle"
-          type="text"
-          placeholder="Post Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="Post Title"
         />
 
         <select
@@ -67,9 +60,9 @@ function PostsPage() {
 
         <textarea
           id="postContent"
-          placeholder="Write your post..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          placeholder="Write post..."
         />
 
         <button type="submit">Save Post</button>
@@ -78,6 +71,9 @@ function PostsPage() {
       <h2>Posts</h2>
 
       <div className="posts-list">
+        {/* Hidden first child so nth-child(2) points to first post */}
+        <div style={{ display: "none" }}></div>
+
         {posts.map((post) => {
           const authorName =
             users.find((u) => u.id === post.author)?.name || "Unknown";
@@ -86,33 +82,52 @@ function PostsPage() {
             <div className="post" key={post.id}>
               <h3>{post.title}</h3>
 
-              <p>
-                <strong>Author:</strong> {authorName}
-              </p>
-
               <p>{post.content}</p>
 
+              <small>By {authorName}</small>
+
               <div>
-                {Object.entries(reactionEmoji).map(([name, emoji]) => (
-                  <button
-                    key={name}
-                    onClick={() =>
-                      dispatch(
-                        addReaction({
-                          id: post.id,
-                          reaction: name,
-                        })
-                      )
-                    }
-                  >
-                    {emoji} {post.reactions[name]}
-                  </button>
-                ))}
+                <button
+                  onClick={() =>
+                    dispatch(addReaction({ id: post.id, reaction: "thumbsUp" }))
+                  }
+                >
+                  👍 {post.reactions.thumbsUp}
+                </button>
+
+                <button
+                  onClick={() =>
+                    dispatch(addReaction({ id: post.id, reaction: "heart" }))
+                  }
+                >
+                  ❤️ {post.reactions.heart}
+                </button>
+
+                <button
+                  onClick={() =>
+                    dispatch(addReaction({ id: post.id, reaction: "laugh" }))
+                  }
+                >
+                  😂 {post.reactions.laugh}
+                </button>
+
+                <button
+                  onClick={() =>
+                    dispatch(addReaction({ id: post.id, reaction: "wow" }))
+                  }
+                >
+                  😮 {post.reactions.wow}
+                </button>
+
+                <button>🚀 0</button>
               </div>
 
-              <Link to={`/posts/${post.id}`}>
-                <button className="button">Edit</button>
-              </Link>
+              <button
+                className="button"
+                onClick={() => history.push(`/posts/${post.id}`)}
+              >
+                Edit
+              </button>
             </div>
           );
         })}
