@@ -1,66 +1,76 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { addPost, addReaction } from "../postsSlice";
 
 function PostsPage() {
-  const history = useHistory();
+  const dispatch = useDispatch();
 
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "Ideas",
-      content: "Test Content",
-      reactions: [0, 0, 0, 0]
-    }
-  ]);
+  const posts = useSelector((state) => state.posts);
+  const users = useSelector((state) => state.users);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
 
-  const addPost = () => {
-    if (!title || !content || !author) return;
+  const onSavePost = (e) => {
+    e.preventDefault();
 
-    const newPost = {
-      id: Date.now(),
-      title,
-      content,
-      reactions: [0, 0, 0, 0]
-    };
+    if (title && content && author) {
+      dispatch(
+        addPost({
+          title,
+          content,
+          author,
+        })
+      );
 
-    setPosts([newPost, ...posts]);
-    setTitle("");
-    setContent("");
+      setTitle("");
+      setContent("");
+      setAuthor("");
+    }
   };
 
-  const addReaction = (id, index) => {
-    setPosts(posts.map(p => {
-      if (p.id === id && index < 4) {
-        const newReactions = [...p.reactions];
-        newReactions[index]++;
-        return { ...p, reactions: newReactions };
-      }
-      return p;
-    }));
+  const reactionEmoji = {
+    thumbsUp: "👍",
+    heart: "❤️",
+    laugh: "😂",
+    wow: "😮",
   };
 
   return (
     <div>
       <h2>Add a New Post</h2>
 
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        addPost();
-      }}>
-        <input id="postTitle" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <form onSubmit={onSavePost}>
+        <input
+          id="postTitle"
+          type="text"
+          placeholder="Post Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-        <select id="postAuthor" onChange={(e) => setAuthor(e.target.value)}>
+        <select
+          id="postAuthor"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+        >
           <option value="">Select Author</option>
-          <option>Uriah</option>
-          <option>Lauren</option>
-          <option>Magnus</option>
+
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
         </select>
 
-        <textarea id="postContent" value={content} onChange={(e) => setContent(e.target.value)} />
+        <textarea
+          id="postContent"
+          placeholder="Write your post..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
 
         <button type="submit">Save Post</button>
       </form>
@@ -68,33 +78,44 @@ function PostsPage() {
       <h2>Posts</h2>
 
       <div className="posts-list">
-        <div></div>
+        {posts.map((post) => {
+          const authorName =
+            users.find((u) => u.id === post.author)?.name || "Unknown";
 
-        {posts.map(post => (
-          <div key={post.id} className="post">
+          return (
+            <div className="post" key={post.id}>
+              <h3>{post.title}</h3>
 
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
+              <p>
+                <strong>Author:</strong> {authorName}
+              </p>
 
-            <div></div>
+              <p>{post.content}</p>
 
-            <div>
-              {["👍","❤️","😂","😮","🚫"].map((r,i)=>(
-                <button key={i} onClick={()=>addReaction(post.id,i)}>
-                  {r} {i===4 ? 0 : post.reactions[i]}
-                </button>
-              ))}
+              <div>
+                {Object.entries(reactionEmoji).map(([name, emoji]) => (
+                  <button
+                    key={name}
+                    onClick={() =>
+                      dispatch(
+                        addReaction({
+                          id: post.id,
+                          reaction: name,
+                        })
+                      )
+                    }
+                  >
+                    {emoji} {post.reactions[name]}
+                  </button>
+                ))}
+              </div>
+
+              <Link to={`/posts/${post.id}`}>
+                <button className="button">Edit</button>
+              </Link>
             </div>
-
-            <button
-              className="button"
-              onClick={() => history.push(`/posts/${post.id}`)}
-            >
-              View
-            </button>
-
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

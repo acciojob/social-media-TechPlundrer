@@ -1,8 +1,9 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 
 import PostsPage from "./PostsPage";
 import UsersPage from "./UsersPage";
+import UserPage from "./UserPage";
 import NotificationsPage from "./NotificationsPage";
 import SinglePostPage from "./SinglePostPage";
 
@@ -11,18 +12,22 @@ function App() {
     <div className="App">
       <h1>GenZ</h1>
 
-      {/* ✅ NAVBAR FIX (no <a>) */}
       <nav>
-        <span onClick={() => window.location.href = "/"}>Posts</span>{" | "}
-        <span onClick={() => window.location.href = "/users"}>Users</span>{" | "}
-        <span onClick={() => window.location.href = "/notifications"}>Notifications</span>
+        <Link to="/">Posts</Link>{" | "}
+        <Link to="/users">Users</Link>{" | "}
+        <Link to="/notifications">Notifications</Link>
       </nav>
 
       <Switch>
         <Route exact path="/" component={PostsPage} />
-        <Route path="/users" component={UsersPage} />
+
+        <Route exact path="/users" component={UsersPage} />
+
+        <Route path="/users/:userId" component={UserPage} />
+
+        <Route path="/posts/:postId" component={SinglePostPage} />
+
         <Route path="/notifications" component={NotificationsPage} />
-        <Route path="/posts/:id" component={SinglePostPage} />
       </Switch>
     </div>
   );
