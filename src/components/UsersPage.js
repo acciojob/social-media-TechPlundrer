@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function UsersPage() {
   const users = useSelector((state) => state.users);
+  const history = useHistory();
 
   return (
     <div>
@@ -11,10 +12,12 @@ function UsersPage() {
 
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>
-              {user.name}
-            </Link>
+          <li
+            key={user.id}
+            onClick={() => history.push(`/users/${user.id}`)}
+            style={{ cursor: "pointer", marginBottom: "10px" }}
+          >
+            {user.name}
           </li>
         ))}
       </ul>
