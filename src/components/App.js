@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <h1>GenZ</h1>
-
+<div></div>
       <nav>
         <Link to="/">Posts</Link>{" | "}
         <Link to="/users">Users</Link>{" | "}
