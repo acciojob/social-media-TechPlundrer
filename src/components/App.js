@@ -4,7 +4,7 @@ import { Switch, Route, Link } from "react-router-dom";
 
 import PostsPage from "./PostsPage";
 import UsersPage from "./UsersPage";
-import UserPage from "../UserPage";
+import UserPage from "./UserPage";
 import NotificationsPage from "./NotificationsPage";
 import SinglePostPage from "./SinglePostPage";
 
