@@ -10,17 +10,16 @@ function UsersPage() {
     <div>
       <h2>Users</h2>
 
-      <ul>
-        {users.map((user) => (
-          <li
-            key={user.id}
-            onClick={() => history.push(`/users/${user.id}`)}
-            style={{ cursor: "pointer", marginBottom: "10px" }}
-          >
-            {user.name}
-          </li>
-        ))}
-      </ul>
+      {users.map((user) => (
+        <div
+          key={user.id}
+          className="post"
+          onClick={() => history.push(`/users/${user.id}`)}
+          style={{ cursor: "pointer", marginBottom: "15px" }}
+        >
+          <h3>{user.name}</h3>
+        </div>
+      ))}
     </div>
   );
 }
